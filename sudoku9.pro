@@ -100,6 +100,17 @@ problem1([
      [9, _, 3, _, _, _, 6, _, 4]
    ]).
 
+escargot([
+      [1, _, _, _, _, 7, _, 9, _],
+      [_, 3, _, _, 2, _, _, _, 8],
+      [_, _, 9, 6, _, _, 5, _, _],
+      [_, _, 5, 3, _, _, 9, _, _],
+      [_, 1, _, _, 8, _, _, _, 2],
+      [6, _, _, _, _, 4, _, _, _],
+      [3, _, _, _, _, _, _, 1, _],
+      [_, 4, _, _, _, _, _, _, 7],
+      [_, _, 7, _, _, _, 3, _, _]
+  ]).
 
 to_board(Atom,Xss):-
   atom_chars(Atom,Cs),
@@ -114,7 +125,7 @@ reshape([[A, B, C, D, E, F, G, H, I]|Xs])-->
    [A, B, C, D, E, F, G, H, I],
    reshape(Xs).
 
-escargot(Xss):-
+escargot_(Xss):-
     E='1....7.9..3..2...8..96..5....53..9...1..8...26....4...3......1..4......7..7...3..',
     to_board(E,Xss).
 
@@ -133,12 +144,6 @@ difs_of([Y|Xs],X)-->
    [X-Y,Y-X],
    difs_of(Xs,X).
 
-/*
-to_dif_graph(Xs,XXs):-
-  all_dif(Xs,Es),
-  keygroups(Es,XXs).
-*/
-
 alt_sudoku(Prob) :-
    call(Prob,Rows),
    maplist(ppp,Rows),nl,
@@ -151,5 +156,3 @@ alt_sudoku(Prob) :-
    maplist(ppp,Rows),nl,
    fail.
 
-
-c:-make.
