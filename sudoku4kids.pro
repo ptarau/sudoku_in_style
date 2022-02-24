@@ -2,8 +2,6 @@
 % author: Paul Tarau, Sept 2009
 % license: free to all
 
-c:-['sudoku4.pro'].
-
 s4x4([
  [
     [S11,S12, S13,S14],
