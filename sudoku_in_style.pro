@@ -66,7 +66,7 @@ to_a_dif_graph(N,B,I,J,X-Difs):-
    difs(row_dif,N,B,I,J,RowDifs),
    difs(col_dif,N,B,I,J,ColDifs),
    difs(bloc_dif,N,B,I,J,[BlocDifs]),
-   append([RowDifs,ColDifs,BlocDifs],Difs).
+   app([RowDifs,ColDifs,BlocDifs],Difs).
 
 % collects difs of a row, col or bloc generator
 difs(Generator,N,B,I,J,Difs):-
@@ -88,7 +88,7 @@ col_dif(N,B,I,J,V):-
 bloc_dif(N,B,I,J,Xs):-
   M is integer(sqrt(N)),
   blocs(M,Bs),
-  select(I-J,Bs,Cs),
+  sel(I-J,Bs,Cs),
   maplist(at(B),Cs,Xs).
 
 blocs(M,Bloc):-
@@ -105,9 +105,12 @@ bloc(L1-H1,L2-H2,I-J):-
   between(L1,H1,I),
     between(L2,H2,J).
 
-
-
 % logic helpers
+
+sel(X,[X|Xs],Xs).
+sel(X,[Y|Xs],[Y|Ys]):-sel(X,Xs,Ys).
+
+app([Xs,Ys,Zs],Rs):-append(Xs,Ys,XYs),append(XYs,Zs,Rs).
 
 at(B,I-J,V):-arg(I,B,Vs),arg(J,Vs,V).
 
@@ -141,11 +144,11 @@ list2row(Xs,Row):-
 
 pp(X):-portray_clause(X).
 
-mpp(Xs):-numbervars(Xs,0,_),member(X,Xs),writeln(X),fail;true.
+mpp(Xs):-numbervars(Xs,0,_),member(X,Xs),write(X),nl,fail;true.
 
 show(B):-
   functor(B,_,N),
-  ( numbervars(B),
+  ( numbervars(B,0,_),
     between(1,N,I),
      (between(1,N,J),
         at(B,I-J,X),
@@ -163,14 +166,14 @@ t0:-
   M=2,N=4,
   empty_board(M,B),
   bloc_dif(N,B,I,J,Xs),
-  pp((I-J):Xs:-B),
+  pp((I-J):(Xs:-B)),
   fail.
 
 t1:-
   M=2,
   empty_board(M,B),
   to_dif_graph(B,Difs),
-  pp(B:-Difs),
+  pp((B:-Difs)),
   fail.
 
 t2:-
@@ -179,7 +182,7 @@ t2:-
   show(B),
 
   difs(row_dif,N,B,I,J,Difs),
-  pp(B:-Difs),
+  pp((B:-Difs)),
   fail.
 
 t3:-
@@ -187,7 +190,7 @@ t3:-
   empty_board(M,B),
   show(B),
   difs(col_dif,N,B,I,J,Difs),
-  pp(B:-Difs),
+  pp((B:-Difs)),
   fail.
 
 t4:-
@@ -195,7 +198,6 @@ t4:-
   empty_board(M,B),
   show(B),
   difs(bloc_dif,N,B,I,J,[Difs]),
-  pp(B:-Difs),
+  pp((B:-Difs)),
   fail.
-
 
