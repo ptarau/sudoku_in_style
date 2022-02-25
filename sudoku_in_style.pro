@@ -142,7 +142,7 @@ lists2board(Rows,Board):-
 list2row(Xs,Row):-
   Row=..[row|Xs].
 
-pp(X):-portray_clause(X).
+ppp(X):-portray_clause(X).
 
 mpp(Xs):-numbervars(Xs,0,_),member(X,Xs),write(X),nl,fail;true.
 
@@ -166,14 +166,14 @@ t0:-
   M=2,N=4,
   empty_board(M,B),
   bloc_dif(N,B,I,J,Xs),
-  pp((I-J):(Xs:-B)),
+  ppp((I-J):(Xs:-B)),
   fail.
 
 t1:-
   M=2,
   empty_board(M,B),
   to_dif_graph(B,Difs),
-  pp((B:-Difs)),
+  ppp((B:-Difs)),
   fail.
 
 t2:-
@@ -182,7 +182,7 @@ t2:-
   show(B),
 
   difs(row_dif,N,B,I,J,Difs),
-  pp((B:-Difs)),
+  ppp((B:-Difs)),
   fail.
 
 t3:-
@@ -190,7 +190,7 @@ t3:-
   empty_board(M,B),
   show(B),
   difs(col_dif,N,B,I,J,Difs),
-  pp((B:-Difs)),
+  ppp((B:-Difs)),
   fail.
 
 t4:-
@@ -198,6 +198,6 @@ t4:-
   empty_board(M,B),
   show(B),
   difs(bloc_dif,N,B,I,J,[Difs]),
-  pp((B:-Difs)),
+  ppp((B:-Difs)),
   fail.
 
