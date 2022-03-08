@@ -23,7 +23,7 @@ solve(Problem):-
 
 sudoku(Rows) :-
    build(Rows,Cols, Blocks),
-   append([Rows,Cols,Blocks],Lists),
+   app([Rows,Cols,Blocks],Lists),
    constrain(Lists).
 
 constrain(Lists):-
@@ -39,7 +39,7 @@ build(Rows,Cols,Blocks):-
   blocks(As, Bs, Cs,Bss1),
   blocks(Ds, Es, Fs,Bss2),
   blocks(Gs, Hs, Is,Bss3),
-  append([Bss1,Bss2,Bss3],Blocks).
+  app([Bss1,Bss2,Bss3],Blocks).
 
 blocks([], [], [],[]).
 blocks([N1,N2,N3|Ns1],[N4,N5,N6|Ns2], [N7,N8,N9|Ns3],
@@ -67,7 +67,7 @@ member_const(X,[_|Xs]):-member_const(X,Xs).
 
 lists2edges(Xss,Ys):-
    maplist(difpairs,Xss,Dss),
-   append(Dss,Ds),
+   app(Dss,Ds),
    sort(Ds,Ys).
 
 difpairs(Xs,Zs):-
@@ -80,9 +80,12 @@ keygroups(Ps,KXs):-
 
 % helpers
 
+app([], []).
+app([L|Ls], As) :- append(L, Ws, As), app(Ls, Ws).
+
 ppp(X):-portray_clause(X).
 
-mpp(Xs):-numbervars(Xs,0,_),member(X,Xs),writeln(X),fail;true.
+mpp(Xs):-numbervars(Xs,0,_),member(X,Xs),write(X),nl,fail;true.
 
 problem(Rows):-
    length(Rows,9),
@@ -148,11 +151,31 @@ alt_sudoku(Prob) :-
    call(Prob,Rows),
    maplist(ppp,Rows),nl,
    build(Rows,Cols, Blocks),
-   append([Rows,Cols,Blocks],Difs),
+   app([Rows,Cols,Blocks],Difs),
    maplist(all_dif,Difs,Ess),
-   append(Ess,Es),
+   app(Ess,Es),
    keygroups(Es,XXs),
    maplist(pick,XXs),
    maplist(ppp,Rows),nl,
    fail.
 
+%/*
+% for Prolog that do not implement these
+
+group_pairs_by_key([], []).
+group_pairs_by_key([M-N|T0],
+                         [M-[N|TN]|T]) :-
+    same_key(M, T0, TN, T1),
+    group_pairs_by_key(T1, T).
+
+same_key(M0,
+               [M-N|T0],
+               [N|TN],
+               T) :-
+    M0==M,
+    !,
+    same_key(M, T0, TN, T).
+same_key(_, L, [], L).
+
+portray_clause(X):-write(X),write('.'),nl.
+%*/

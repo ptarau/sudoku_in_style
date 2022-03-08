@@ -86,7 +86,7 @@ col_dif(N,B,I,J,V):-
   at(B,AltI-J,V).
 
 bloc_dif(N,B,I,J,Xs):-
-  M is integer(sqrt(N)),
+  M is round(sqrt(N)),
   blocs(M,Bs),
   sel(I-J,Bs,Cs),
   maplist(at(B),Cs,Xs).
@@ -110,7 +110,10 @@ bloc(L1-H1,L2-H2,I-J):-
 sel(X,[X|Xs],Xs).
 sel(X,[Y|Xs],[Y|Ys]):-sel(X,Xs,Ys).
 
-app([Xs,Ys,Zs],Rs):-append(Xs,Ys,XYs),append(XYs,Zs,Rs).
+
+app([], []).
+app([L|Ls], As) :- append(L, Ws, As), app(Ls, Ws).
+
 
 at(B,I-J,V):-arg(I,B,Vs),arg(J,Vs,V).
 
