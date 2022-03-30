@@ -5,7 +5,7 @@ def sudoku(grid):
     """
        solves or generates all possible
        square sudoku problems specified by a grid
-       input: grid as  alist lists with 0 marking free spots
+       input: grid as  alist of lists with 0 marking free spots
        yield: one or more filled out grids as answers
     """
     n = len(grid)
